@@ -2,7 +2,7 @@
     "pipeline": [
         { 
             "polygon": "",
-            "filename": "https://s3-us-west-2.amazonaws.com/usgs-lidar-public/IA_FullState/ept.json",
+            "filename": "",
             "type": "readers.ept",
             "tag": "readdata"
         },
@@ -12,8 +12,8 @@
             "tag": "no_noise"
         },
         {
-            "in_srs":"EPSG:3857",
-            "out_srs": "EPSG:4326",
+            "in_srs":"",
+            "out_srs": "",
             "tag": "reprojectUTM",
             "type": "filters.reprojection"
         },
