@@ -1,7 +1,7 @@
 {
     "pipeline": [
         {
-            "bounds": "([-10425171.940, -10425170.940], [5164494.710, 5164496.710])",
+            "bounds": "([-10425171.940, -10425071.940], [5164494.710, 5164594.710])",
             "filename": "https://s3-us-west-2.amazonaws.com/usgs-lidar-public/IA_FullState/ept.json",
             "type": "readers.ept",
             "tag": "readdata"
