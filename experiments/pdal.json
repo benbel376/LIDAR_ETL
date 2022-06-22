@@ -19,8 +19,13 @@
         },
         {
             "filename": "iowa.csv",
-            "tag": "writerslas",
+            "tag": "writerscsv",
             "type": "writers.text"
+        },
+        {
+            "filename": "iowa.las",
+            "tag": "writersply",
+            "type": "writers.las"
         }
     ]
 }
