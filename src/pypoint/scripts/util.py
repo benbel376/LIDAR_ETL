@@ -93,15 +93,3 @@ def modify_pipe_json(json_loc, url, region, in_epsg, out_epsg):
     dicti['pipeline'][2]['out_srs'] = f"EPSG:{out_epsg}"
     print(dicti)
     return dicti
-
-def plot_heatmap(df, title) -> None:
-    """ Plots a 2D heat map for the point cloud data using matplotlib
-    """
-
-    fig, ax = plt.subplots(1, 1, figsize=(12, 10))
-    df.plot(column='elevation', ax=ax, legend=True, cmap="terrain")
-    plt.title(title)
-    plt.xlabel('Longitude')
-    plt.ylabel('Latitude')
-    plt.savefig('eatmap.png', dpi=120)
-    plt.show()
