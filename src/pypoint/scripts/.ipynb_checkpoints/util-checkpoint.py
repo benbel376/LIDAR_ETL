@@ -65,3 +65,10 @@ Return:
         converted.append(convert_EPSG(4326, item[0], item[1]))
         
     return converted
+
+
+def generate_polygon(coor, epsg):
+    polygon_g = Polygon(coor)
+    crs = {'init': 'epsg:'+str(epsg)}
+    polygon = gpd.GeoDataFrame(index=[0], crs=crs, geometry=[polygon_g])       
+    return polygon
