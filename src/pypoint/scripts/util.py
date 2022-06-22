@@ -72,3 +72,14 @@ def generate_polygon(coor, epsg):
     crs = {'init': 'epsg:'+str(epsg)}
     polygon = gpd.GeoDataFrame(index=[0], crs=crs, geometry=[polygon_g])       
     return polygon
+
+
+def show_on_map(polygon, zoom):
+    #region selection
+    poly = mapping((polygon2.iloc[:,0][0]))
+    tmp = poly['coordinates'][0][0]
+    anchor = [tmp[1], tmp[0]]
+    m = folium.Map(anchor,zoom_start=zoom, tiles='cartodbpositron')
+    folium.GeoJson(polygon).add_to(m)
+    folium.LatLngPopup().add_to(m)
+    return m
