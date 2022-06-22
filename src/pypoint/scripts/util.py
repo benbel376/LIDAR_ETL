@@ -83,3 +83,13 @@ def show_on_map(polygon, zoom):
     folium.GeoJson(polygon).add_to(m)
     folium.LatLngPopup().add_to(m)
     return m
+
+
+def modify_pipe_json(json_loc, url, region, in_epsg, out_epsg):
+    dicti = read_json(json_loc)
+    dicti['pipeline'][0]['polygon'] = str(polygon.iloc[:,0][0])
+    dicti['pipeline'][0]['filename'] = f"{url}/{region}/ept.json"
+    dicti['pipeline'][2]['in_srs'] = f"EPSG:{in_epsg}"
+    dicti['pipeline'][2]['out_srs'] = f"EPSG:{out_epsg}"
+    print(dicti)
+    return dicti
