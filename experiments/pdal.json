@@ -6,11 +6,10 @@
             "type": "readers.ept",
             "tag": "readdata"
         },
-        {
-            "type": "filters.range",
-            "limits": "Classification![7:7]",
-            "tag": "no_noise"
-        },
+    	{
+	    "type":"filters.range",
+	    "limits":"Classification[2:2]"
+    	},
         {
             "in_srs":"",
             "out_srs": "",
@@ -26,6 +25,13 @@
             "filename": "iowa.las",
             "tag": "writersply",
             "type": "writers.las"
+        },
+        {
+            "filename":"dem.tif",
+            "gdaldriver":"GTiff",
+            "output_type":"all",
+            "resolution":"1.0",
+            "type": "writers.gdal"
         }
     ]
 }
