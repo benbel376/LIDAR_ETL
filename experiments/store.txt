@@ -1,0 +1,80 @@
+df.plot(c='elevation', scheme="quantiles", cmap='terrain', legend=True,
+                                  markersize=10,
+                                  figsize=(15, 20),
+                                  missing_kwds={
+                                    "color": "lightgrey",
+                                    "edgecolor": "red",
+                                    "hatch": "///",
+                                    "label": "Missing values"}
+                                  )
+
+plt.title('Terrain Elevation Map')
+plt.xlabel('Longitude')
+plt.ylabel('Latitude')
+
+point_cloud = lp.read("iowa.las")
+point_cloud
+
+points = np.vstack((point_cloud.x, point_cloud.y, point_cloud.z)).transpose()
+
+voxel_size=0.0001
+nb_vox=np.ceil((np.max(points, axis=0) - np.min(points, axis=0))/voxel_size)
+non_empty_voxel_keys, inverse, nb_pts_per_voxel = np.unique(((points - np.min(points, axis=0)) // voxel_size).astype(int), axis=0, return_inverse=True, return_counts=True)
+idx_pts_vox_sorted=np.argsort(inverse)
+nb_vox
+
+voxel_grid={}
+grid_barycenter,grid_candidate_center=[],[]
+last_seen=0
+for idx,vox in enumerate(non_empty_voxel_keys):
+    voxel_grid[tuple(vox)]= points[idx_pts_vox_sorted[
+    last_seen:last_seen+nb_pts_per_voxel[idx]]]
+    grid_barycenter.append(np.mean(voxel_grid[tuple(vox)],axis=0))
+    grid_candidate_center.append(
+    voxel_grid[tuple(vox)][np.linalg.norm(voxel_grid[tuple(vox)] -
+    np.mean(voxel_grid[tuple(vox)],axis=0),axis=1).argmin()])
+    last_seen+=nb_pts_per_voxel[idx]
+    
+len(grid_barycenter)
+
+
+tmp_df = pd.DataFrame(grid_barycenter)
+tmp_df.columns=["x", "y", "elevation"]
+
+plot_heatmap(tmp_df, "tmp")
+
+
+
+import matplotlib.pyplot as plt
+from mpl_toolkits import mplot3d
+
+
+ax = plt.axes(projection='3d')
+ax.scatter(points[:,0], points[:,1], points[:,2])
+plt.show()
+
+
+{'pipeline': 
+    [
+        { 
+            'polygon': 'POLYGON ((-10436876.301386151 5148721.349314567, -10436887.43333523 5148736.309605352, -10436914.26133251 
+                        5148775.206471106, -10436865.169437071 5148749.025870951, -10436847.358318545 5148704.145009145, -10436876.301386151 
+                        5148721.349314567))', 
+            'filename': 'https://s3-us-west-2.amazonaws.com/usgs-lidar-public/IA_FullState/ept.jsonIA_FullState/ept.json', 
+            'type': 'readers.ept', 
+            'tag': 'readdata',
+            'bounds': '([-10758074, 4920531, -10034134, 5389814])'
+        }, 
+        
+        {'type': 'filters.range', 'limits': 'Classification[2:2]'}, 
+        
+        {'in_srs': 'EPSG:3857', 'out_srs': 'EPSG:4326', 'tag': 'reprojectUTM', 'type': 'filters.reprojection'}, 
+        
+        {'filename': 'iowa.csv', 'tag': 'writerscsv', 'type': 'writers.text'}, 
+        
+        {'filename': 'iowa.las', 'tag': 'writersply', 'type': 'writers.las'}, 
+        
+        {'filename': 'dem.tif', 'gdaldriver': 'GTiff', 'output_type': 'all', 'resolution': '1.0', 'type': 'writers.gdal'}
+    ]
+    
+ }
