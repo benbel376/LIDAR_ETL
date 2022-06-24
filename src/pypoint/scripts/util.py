@@ -10,7 +10,28 @@ import laspy as lp
 
 
 class util:
-
+    
+    def create_meta(region_list, name, url, offset=0):
+        metadata = {}
+        urlf = ""+str(url)
+        counter = 0 + offset
+        for i in range(len(region_list)):
+            newurl = urlf+str(region_list[i+offset])+"ept.json"
+            counter = counter+1
+            try:
+                with open(name, 'r') as openfile:
+                    # Reading from json file
+                    metadata = json.load(openfile)
+            except:
+                pass
+            print((newurl), counter)
+            with urllib.request.urlopen(newurl, timeout=1000000) as url:
+                data = json.loads(url.read().decode())
+                metadata[f'{region_list[i+offset]}'] = data
+            with open(name, "w") as outfile:
+                outfile.write(json.dumps(metadata))
+                
+                
     # loading json file
     def read_json(self, json_path):
     """ reads a json file and returns a pthon dictionary
@@ -28,6 +49,56 @@ class util:
 
         except FileNotFoundError:
             print('File not found.')
+    
+    
+    def load_full_data(selection_list, url, polygon, json_location, epsg):
+        regions = selection_list[0]
+        bounds = selection_list[1]
+
+        data = {}
+        url = url
+        for i in range(len(regions)):
+            try:
+                year = int(regions[i][-4:])
+            except ValueError:
+                year = None
+            region = regions[i]
+            furl = url+region+"ept.json"
+            request = modify_pipe_json(json_location, furl, epsg[0], epsg[1], polygon, bounds[i])
+            pipe = pdal.Pipeline(json.dumps(request))
+            pipe.execute()
+            df = generate_geo_df(pipe.arrays[0], epsg[1])
+            data["year"] = f"{year}"
+            data["data"] = df
+
+        return pd.DataFrame([data])
+    
+    
+    def compare(meta_loc, coor):
+        
+        try:
+            with open(meta_loc, 'r') as openfile:
+                # Reading from json file
+                metadata = json.load(openfile)
+                metakeys = list(metadata.keys())
+        except:
+            pass
+        selection_list = {}
+        for i in range(len(metakeys)):
+            bounds = metadata[metakeys[i]]['boundsConforming']
+            xMin, yMin = float(bounds[0]), float(bounds[1])
+            xMax, yMax = float(bounds[3]), float(bounds[4])
+            for points in coor:
+                px = float(points[0])
+                py = float(points[1])
+                if((px >= xMin) and (px <= xMax)):
+                    if((py >= yMin) and (py <= yMax)):
+                        save_bounds = bounds[:]
+                        save_bounds.pop(2)
+                        save_bounds.pop(4)
+                        selection_list[metakeys[i]] = save_bounds
+
+        return [list(selection_list.keys()), list(selection_list.values())]
 
     def convert_EPSG(self, fromT, lon, lat):
     """ a function that converts one EPSG format to another
