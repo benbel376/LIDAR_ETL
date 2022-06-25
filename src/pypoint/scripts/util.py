@@ -124,6 +124,17 @@ class Util:
         return [x, y]
         
     def loop_EPSG_converter(self, listin, fromT, toT):
+        """ runs the convert_EPSG function for a list of points
+        
+        Params:
+            listin: list of points
+            fromT: old epsg format
+            toT: new epsg format
+            
+        return: converted list of points. 
+        
+        
+        """
         converted = []
         for item in listin:
             converted.append(self.convert_EPSG(fromT, toT, item[0], item[1]))
