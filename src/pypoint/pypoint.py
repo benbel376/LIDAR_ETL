@@ -182,7 +182,7 @@ class pypoint:
         plt.show()
 
 
-    def plot_heatmap(df, title) -> None:
+    def plot_heatmap(self, df, title) -> None:
         """ Plots a 2D heat map for the point cloud data using matplotlib
         """
 
@@ -191,11 +191,11 @@ class pypoint:
         plt.title(title)
         plt.xlabel('Longitude')
         plt.ylabel('Latitude')
-        plt.savefig('eatmap.png', dpi=120)
+        plt.savefig(title, dpi=120)
         plt.show()
         
         
-    def grid_resample(df,size, epsg=4326):
+    def grid_resample(self, df,size, epsg=4326):
         newdf = df.copy()
         points1 = list(zip(newdf.geometry.x, newdf.geometry.y, newdf.elevation.values))
 
@@ -229,6 +229,6 @@ class pypoint:
                                                       - np.mean(voxel_grid[tuple(vox)],axis=0),axis=1).argmin()])
             last_seen+=nb_pts_per_voxel[idx]
 
-        df22 = generate_geo_df(grid_barycenter, epsg)
+        df22 = self.generate_geo_df(grid_barycenter, epsg)
 
         return df22

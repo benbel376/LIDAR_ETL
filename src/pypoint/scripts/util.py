@@ -17,7 +17,7 @@ warnings.filterwarnings("ignore")
 
 class Util:
     
-    def create_meta(region_list, name, url, offset=0):
+    def create_meta(self, region_list, name, url, offset=0):
         metadata = {}
         urlf = ""+str(url)
         counter = 0 + offset
