@@ -1,3 +1,10 @@
+# This is a basic workflow to run tests
+
+name: "CI tester"
+
+# Controls when the workflow will run
+on: [push, pull_request]
+  
 jobs:
   example-1:
     name: Ex1 (${{ matrix.python-version }}, ${{ matrix.os }})
