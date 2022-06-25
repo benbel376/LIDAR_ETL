@@ -79,7 +79,7 @@ class Pypoint:
             cloud_points = []
             elevations =[]
             geometry_points=[]
-            for row in pipe.arrays[0]:
+            for row in pipe:
                 lst = row.tolist()[-3:]
                 cloud_points.append(lst)
                 elevations.append(lst[2])

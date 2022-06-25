@@ -7,41 +7,79 @@ import numpy as np
 from pyproj import Proj, transform
 import folium
 import laspy as lp
+import richdem as rd
+import rasterio
+import math
+from scipy.interpolate import griddata
+from rasterio.transform import Affine
+from rasterio.crs import CRS
+import urllib.request, json 
+import warnings
+import matplotlib.pyplot as plt
+warnings.filterwarnings("ignore")
+import sys
 
+sys.path.append(".")
+sys.path.append("..")
+from scripts import util
+utility = util.Util()
 
-class pypoint: 
+class Pypoint: 
     """
     class that provides data fetching, transforming, and visualization functionalities
     
     """
     
-    def fetch_data(coordinates, 
-                   polygon, 
+    def fetch_data(self, coordinates, 
+                   meta_path, 
                    pipeline, 
                    epsg=[3857, 4326], 
                    url='https://s3-us-west-2.amazonaws.com/usgs-lidar-public/'):
         
-        coor = loop_EPSG_converter(coordinates, epsg[1], epsg[0])
-        polygon = generate_polygon(coor, epsg[0])
+        coor = utility.loop_EPSG_converter(coordinates, epsg[1], epsg[0])
+        polygon = utility.generate_polygon(coor, epsg[0])
 
-        selection = compare("metadata.json", coor)
+        selection = utility.compare(meta_path, coor)
 
         print(f"Selected Regions: {selection[0]}")
 
-        data = load_full_data(selection, url, polygon, pipeline, epsg)
+        data = self.load_full_data(selection, url, polygon, pipeline, epsg)
 
         return data
 
 
-    def generate_geo_df(pipe, epsg):
-    """
-    returns a geopandas dataframe
-    """
+    def load_full_data(self, selection_list, url, polygon, json_location, epsg):
+        regions = selection_list[0]
+        bounds = selection_list[1]
+
+        data = {}
+        url = url
+        for i in range(len(regions)):
+            try:
+                year = int(regions[i][-4:])
+            except ValueError:
+                year = None
+            region = regions[i]
+            furl = url+region+"ept.json"
+            request = utility.modify_pipe_json(json_location, furl, epsg[0], epsg[1], polygon, bounds[i])
+            pipe = pdal.Pipeline(json.dumps(request))
+            num = pipe.execute()
+            print(f"Number of loadded points: {num}")
+            df = self.generate_geo_df(pipe.arrays[0], epsg[1])
+            data["year"] = f"{year}"
+            data["data"] = df
+
+        return pd.DataFrame([data])
+
+    def generate_geo_df(self, pipe, epsg):
+        """
+        returns a geopandas dataframe
+        """
         try:
             cloud_points = []
             elevations =[]
             geometry_points=[]
-            for row in pipe.arrays[0]:
+            for row in pipe:
                 lst = row.tolist()[-3:]
                 cloud_points.append(lst)
                 elevations.append(lst[2])
@@ -56,16 +94,18 @@ class pypoint:
         except RuntimeError as e:
             self.logger.exception('fails to extract geo data frame')
             print(e)
+
+
     
-    def calculate_TWI(df, prec = 0.000001, epsg = 4326, save_slope=None, save_accum=None):
+    def calculate_TWI(self, df, prec = 0.000001, epsg = 4326, save_slope=None, save_accum=None):
         in_df = df.copy()
         points = list(zip(in_df.geometry.x, in_df.geometry.y))
         values = in_df.elevation.values
 
         rRes = prec
 
-        xRange = np.arange(newdf.geometry.x.min(), newdf.geometry.x.max()+rRes, rRes)
-        yRange = np.arange(newdf.geometry.y.min(), newdf.geometry.y.max()+rRes, rRes)
+        xRange = np.arange(in_df.geometry.x.min(), in_df.geometry.x.max()+rRes, rRes)
+        yRange = np.arange(in_df.geometry.y.min(), in_df.geometry.y.max()+rRes, rRes)
 
         gridX, gridY = np.meshgrid(xRange, yRange)
 
@@ -110,7 +150,7 @@ class pypoint:
 
         slope_l = []
         accum_l = []
-        for point in newdf['geometry']:
+        for point in in_df['geometry']:
             x = point.xy[0][0]
             y = point.xy[1][0]
             row, col = dataset.index(x,y)
@@ -122,27 +162,28 @@ class pypoint:
         for i in range(len(slope_l)):
             TWI.append(np.log(abs((accum_l[i]/math.tan((slope_l[i]* math.pi/180.0))))))
 
-        df["TWI"] = TWI
+        in_df["TWI"] = TWI
 
-        return df
+        return in_df
     
     
     
     
-    def render_3d(points, s: float = 0.01) -> None:
+    def render_3d(self, df, title, s: float = 0.01) -> None:
         """ Plots a 3D terrain scatter plot for the cloud data points of geopandas data frame using matplotlib
         """
 
         fig, ax = plt.subplots(1, 1, figsize=(12, 10))
         ax = plt.axes(projection='3d')
-        ax.scatter(points[:, 0], points[:, 1], points[:, 2], s=s)
+        ax.scatter(df.geometry.x, df.geometry.y, df.elevation.values, s=s)
         ax.set_xlabel('Longitude')
         ax.set_ylabel('Latitude')
-        plt.savefig('plot3d.png', dpi=120)
+        plt.title(title)
+        plt.savefig(title, dpi=120)
         plt.show()
 
 
-    def plot_heatmap(df, title) -> None:
+    def plot_heatmap(self, df, title) -> None:
         """ Plots a 2D heat map for the point cloud data using matplotlib
         """
 
@@ -151,11 +192,11 @@ class pypoint:
         plt.title(title)
         plt.xlabel('Longitude')
         plt.ylabel('Latitude')
-        plt.savefig('eatmap.png', dpi=120)
+        plt.savefig(title, dpi=120)
         plt.show()
         
         
-    def grid_resample(df,size, epsg=4326):
+    def grid_resample(self, df,size, epsg=4326):
         newdf = df.copy()
         points1 = list(zip(newdf.geometry.x, newdf.geometry.y, newdf.elevation.values))
 
@@ -189,6 +230,6 @@ class pypoint:
                                                       - np.mean(voxel_grid[tuple(vox)],axis=0),axis=1).argmin()])
             last_seen+=nb_pts_per_voxel[idx]
 
-        df22 = generate_geo_df(grid_barycenter, epsg)
+        df22 = self.generate_geo_df(grid_barycenter, epsg)
 
         return df22
