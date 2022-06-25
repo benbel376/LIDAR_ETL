@@ -19,6 +19,15 @@ warnings.filterwarnings("ignore")
 class Util:
     
     def create_meta(self, region_list, name, url, offset=0):
+        """creates meta data
+        Params:
+            region_list: csv or txt file with list of regions
+            name: name for the metadata to generate.
+            url: the url to fetch the metadata from.
+            offset: the line number in the region_list to start fetching data from
+            
+        return: None.
+        """
         metadata = {}
         urlf = ""+str(url)
         counter = 0 + offset
