@@ -15,7 +15,7 @@ import warnings
 import matplotlib.pyplot as plt
 warnings.filterwarnings("ignore")
 
-class util:
+class Util:
     
     def create_meta(region_list, name, url, offset=0):
         metadata = {}
