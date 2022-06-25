@@ -182,7 +182,18 @@ class Util:
 
 
     def modify_pipe_json(self, json_loc, url, path, in_epsg, out_epsg, polygon_b, bounds=None):
-        """ 
+        """ updates the pipeline for pdal in json format.
+        
+        params: 
+            json_loc: location of the pipleine json file
+            url: the data url to add into the pipeline
+            path: data path to add to url. location to save the generated data to.
+            in_epsg: the input epsg to add to pipeline
+            out_epsg: te output epsg to add to pipeline
+            polygon_b: the polygon boundary coordinates in string to add to the pipeline
+            bounds: the bounds of the data to be fetched in string of lists
+            
+        return: a dictionary to save 
         
         """
         dicti = self.read_json(json_loc)
