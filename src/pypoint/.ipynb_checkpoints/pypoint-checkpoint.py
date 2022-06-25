@@ -36,6 +36,17 @@ class Pypoint:
                    pipeline, 
                    epsg=[3857, 4326], 
                    url='https://s3-us-west-2.amazonaws.com/usgs-lidar-public/'):
+        """
+        loads data by taking path and epsg informations
+        param:
+            meta_path: the location of the metadata
+            save_path: the location to save fetched data
+            pipeline: the loction of the pdal pipeline json file
+            epsg: a list of epsg files that hold original and new epsg values
+            url: url to fetch the data from
+            
+        return: geopandas dataframe with elevation and location varibles
+        """
         
         coor = utility.loop_EPSG_converter(coordinates, epsg[1], epsg[0])
         polygon = utility.generate_polygon(coor, epsg[0])
@@ -48,8 +59,24 @@ class Pypoint:
 
         return data
 
+    
 
     def load_full_data(self, selection_list, url, path, polygon, json_location, epsg):
+        """ loads data by taking selection information.
+        
+        params:
+            selection_list: a list that contains region names and their boundaries
+            url: url to fetch the data from
+            path: the path to save the data to.
+            polygon: the selection boundary in polygon form
+            json_location: the location of pdal pipeline json
+            epsg: a list: [from, to]
+        
+        return: geopandas dataframe.
+        
+        """
+        
+        
         regions = selection_list[0]
         bounds = selection_list[1]
 
@@ -73,8 +100,13 @@ class Pypoint:
         return pd.DataFrame([data])
 
     def generate_geo_df(self, pipe, epsg):
-        """
-        returns a geopandas dataframe
+        """ Turns an array into a geopandas dataframe.
+        
+        params: 
+            pipe: pdal pipeline object
+            epsg: from and to epsg formats
+            
+        return: a geopandas dataframe.
         """
         try:
             cloud_points = []
@@ -99,6 +131,19 @@ class Pypoint:
 
     
     def calculate_TWI(self, df, prec = 0.000001, epsg = 4326, save_slope=None, save_accum=None):
+        """ calculates topographic wetness index based on slope and accmulation results.
+        
+        params: 
+            df: the dataframe that holds the point cloud.
+            prec: the precision for interpolation
+            epsg: the final epsg format
+            save_slope: a location to save the generated slope image
+            save_accum: a location to save the accummulation image
+            
+        return: a new dataframe with TWI column added
+        
+        """
+        
         in_df = df.copy()
         points = list(zip(in_df.geometry.x, in_df.geometry.y))
         values = in_df.elevation.values
@@ -172,6 +217,14 @@ class Pypoint:
     
     def render_3d(self, df, title, path, s: float = 0.01) -> None:
         """ Plots a 3D terrain scatter plot for the cloud data points of geopandas data frame using matplotlib
+        
+        params:
+            df: the data
+            title: the title for generated image
+            path: path to save the generated image
+            s: precision.
+            
+        return: none.
         """
 
         fig, ax = plt.subplots(1, 1, figsize=(12, 10))
@@ -186,6 +239,13 @@ class Pypoint:
 
     def plot_heatmap(self, df, title, path) -> None:
         """ Plots a 2D heat map for the point cloud data using matplotlib
+        
+        params: 
+            df: the data.
+            title: the title for the image to be generated.
+            path: the path to save the image to be generated.
+            
+        returns: None.
         """
 
         fig, ax = plt.subplots(1, 1, figsize=(12, 10))
@@ -198,6 +258,17 @@ class Pypoint:
         
         
     def grid_resample(self, df,size, epsg=4326):
+        """ resamples points using grid method
+        
+        params: 
+            df: the data
+            size: the size of voxels
+            epsg: the final epsg
+            
+        return: resampled dataframe.
+        
+        
+        """
         newdf = df.copy()
         points1 = list(zip(newdf.geometry.x, newdf.geometry.y, newdf.elevation.values))
 
