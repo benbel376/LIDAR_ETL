@@ -8,7 +8,7 @@
         },
     	{
 	    "type":"filters.range",
-	    "limits":"Classification[2:2]"
+	    "limits":"Classification[1:3]"
     	},
         {
             "in_srs":"",

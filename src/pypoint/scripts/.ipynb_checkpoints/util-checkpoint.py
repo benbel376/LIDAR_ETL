@@ -7,11 +7,18 @@ import numpy as np
 from pyproj import Proj, transform
 import folium
 import laspy as lp
+import richdem as rd
+import rasterio
+import math
+from branca.element import Figure
+import urllib.request, json 
+import warnings
+import matplotlib.pyplot as plt
+warnings.filterwarnings("ignore")
 
-
-class util:
+class Util:
     
-    def create_meta(region_list, name, url, offset=0):
+    def create_meta(self, region_list, name, url, offset=0):
         metadata = {}
         urlf = ""+str(url)
         counter = 0 + offset
@@ -34,14 +41,14 @@ class util:
                 
     # loading json file
     def read_json(self, json_path):
-    """ reads a json file and returns a pthon dictionary
+        """ reads a json file and returns a pthon dictionary
 
-    json_path:
-        path to file
+        json_path:
+            path to file
 
-    return:
-        a python dictionary
-    """
+        return:
+            a python dictionary
+        """
         try:
             with open(json_path) as js:
                 json_obj = json.load(js)
@@ -51,30 +58,8 @@ class util:
             print('File not found.')
     
     
-    def load_full_data(selection_list, url, polygon, json_location, epsg):
-        regions = selection_list[0]
-        bounds = selection_list[1]
-
-        data = {}
-        url = url
-        for i in range(len(regions)):
-            try:
-                year = int(regions[i][-4:])
-            except ValueError:
-                year = None
-            region = regions[i]
-            furl = url+region+"ept.json"
-            request = modify_pipe_json(json_location, furl, epsg[0], epsg[1], polygon, bounds[i])
-            pipe = pdal.Pipeline(json.dumps(request))
-            pipe.execute()
-            df = generate_geo_df(pipe.arrays[0], epsg[1])
-            data["year"] = f"{year}"
-            data["data"] = df
-
-        return pd.DataFrame([data])
     
-    
-    def compare(meta_loc, coor):
+    def compare(self, meta_loc, coor):
         
         try:
             with open(meta_loc, 'r') as openfile:
@@ -100,70 +85,51 @@ class util:
 
         return [list(selection_list.keys()), list(selection_list.values())]
 
-    def convert_EPSG(self, fromT, lon, lat):
-    """ a function that converts one EPSG format to another
 
-    parameters:
-        fromT: the original EPSG format
-        lon: the longitude value
-        lat: the latitude value
 
-    Return: 
-        [x, y]: a list with new EPSG formatted values
 
-    """
-        P3857 = Proj(init='epsg:3857')
-        P4326 = Proj(init='epsg:4326')
-        if(fromT == 4326):
-            input1 = P4326
-            input2 = P3857
-        else:
-            input1=p3857
-            input2=p4326
-
+    def convert_EPSG(self, fromT, toT, lon, lat):
+        input1 = Proj(init=f'epsg:{fromT}')
+        input2 = Proj(init=f'epsg:{toT}') 
         x, y = transform(input1,input2, lon, lat)
         return [x, y]
-
-    def loop_EPSG_converter(self, listin):
-    """ runs the EPSG converter for specified amount of iterations
-
-    Parameter:
-        listin: a list that contains a pair of latitude and longitude values
-
-    Return: 
-        converted: a new list with converted set of pairs of the values
-
-    """
+        
+    def loop_EPSG_converter(self, listin, fromT, toT):
         converted = []
         for item in listin:
-            converted.append(convert_EPSG(4326, item[0], item[1]))
-
+            converted.append(self.convert_EPSG(fromT, toT, item[0], item[1]))
+            
         return converted
-
 
     def generate_polygon(self, coor, epsg):
         polygon_g = Polygon(coor)
         crs = {'init': 'epsg:'+str(epsg)}
-        polygon = gpd.GeoDataFrame(index=[0], crs=crs, geometry=[polygon_g])       
+        polygon = geopandas.GeoDataFrame(index=[0], crs=crs, geometry=[polygon_g])       
+        
         return polygon
 
 
     def show_on_map(self, polygon, zoom):
         #region selection
-        poly = mapping((polygon2.iloc[:,0][0]))
+        poly = mapping((polygon.iloc[:,0][0]))
         tmp = poly['coordinates'][0][0]
         anchor = [tmp[1], tmp[0]]
-        m = folium.Map(anchor,zoom_start=zoom, tiles='cartodbpositron')
+        fig = Figure(width=600, height=400)
+        m = folium.Map(anchor, zoom_start=zoom, tiles='cartodbpositron')
         folium.GeoJson(polygon).add_to(m)
         folium.LatLngPopup().add_to(m)
-        return m
+        fig.add_child(m)
+        return fig
 
 
-    def modify_pipe_json(self, json_loc, url, region, in_epsg, out_epsg):
-        dicti = read_json(json_loc)
-        dicti['pipeline'][0]['polygon'] = str(polygon.iloc[:,0][0])
-        dicti['pipeline'][0]['filename'] = f"{url}/{region}/ept.json"
+    def modify_pipe_json(self, json_loc, url, path, in_epsg, out_epsg, polygon_b, bounds=None):
+        dicti = self.read_json(json_loc)
+        if bounds is not None:
+            dicti['pipeline'][0]['bounds'] = f"([{bounds[0]},{bounds[2]}],[{bounds[1]},{bounds[3]}])"
+        dicti['pipeline'][0]['polygon'] = str(polygon_b.iloc[:,0][0])
+        dicti['pipeline'][0]['filename'] = url
         dicti['pipeline'][2]['in_srs'] = f"EPSG:{in_epsg}"
         dicti['pipeline'][2]['out_srs'] = f"EPSG:{out_epsg}"
-        print(dicti)
+        dicti['pipeline'][3]['filename'] = f"{path}"
+        
         return dicti

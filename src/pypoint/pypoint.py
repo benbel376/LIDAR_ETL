@@ -31,7 +31,8 @@ class Pypoint:
     """
     
     def fetch_data(self, coordinates, 
-                   meta_path, 
+                   meta_path,
+                   save_path,
                    pipeline, 
                    epsg=[3857, 4326], 
                    url='https://s3-us-west-2.amazonaws.com/usgs-lidar-public/'):
@@ -43,12 +44,12 @@ class Pypoint:
 
         print(f"Selected Regions: {selection[0]}")
 
-        data = self.load_full_data(selection, url, polygon, pipeline, epsg)
+        data = self.load_full_data(selection, url, save_path, polygon, pipeline, epsg)
 
         return data
 
 
-    def load_full_data(self, selection_list, url, polygon, json_location, epsg):
+    def load_full_data(self, selection_list, url, path, polygon, json_location, epsg):
         regions = selection_list[0]
         bounds = selection_list[1]
 
@@ -61,7 +62,7 @@ class Pypoint:
                 year = None
             region = regions[i]
             furl = url+region+"ept.json"
-            request = utility.modify_pipe_json(json_location, furl, epsg[0], epsg[1], polygon, bounds[i])
+            request = utility.modify_pipe_json(json_location, furl, path, epsg[0], epsg[1], polygon, bounds[i])
             pipe = pdal.Pipeline(json.dumps(request))
             num = pipe.execute()
             print(f"Number of loadded points: {num}")
@@ -169,7 +170,7 @@ class Pypoint:
     
     
     
-    def render_3d(self, df, title, s: float = 0.01) -> None:
+    def render_3d(self, df, title, path, s: float = 0.01) -> None:
         """ Plots a 3D terrain scatter plot for the cloud data points of geopandas data frame using matplotlib
         """
 
@@ -179,11 +180,11 @@ class Pypoint:
         ax.set_xlabel('Longitude')
         ax.set_ylabel('Latitude')
         plt.title(title)
-        plt.savefig(title, dpi=120)
+        plt.savefig(f"{path}", dpi=120)
         plt.show()
 
 
-    def plot_heatmap(self, df, title) -> None:
+    def plot_heatmap(self, df, title, path) -> None:
         """ Plots a 2D heat map for the point cloud data using matplotlib
         """
 
@@ -192,7 +193,7 @@ class Pypoint:
         plt.title(title)
         plt.xlabel('Longitude')
         plt.ylabel('Latitude')
-        plt.savefig(title, dpi=120)
+        plt.savefig(f"{path}", dpi=120)
         plt.show()
         
         

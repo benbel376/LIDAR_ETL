@@ -122,7 +122,7 @@ class Util:
         return fig
 
 
-    def modify_pipe_json(self, json_loc, url, in_epsg, out_epsg, polygon_b, bounds=None):
+    def modify_pipe_json(self, json_loc, url, path, in_epsg, out_epsg, polygon_b, bounds=None):
         dicti = self.read_json(json_loc)
         if bounds is not None:
             dicti['pipeline'][0]['bounds'] = f"([{bounds[0]},{bounds[2]}],[{bounds[1]},{bounds[3]}])"
@@ -130,5 +130,6 @@ class Util:
         dicti['pipeline'][0]['filename'] = url
         dicti['pipeline'][2]['in_srs'] = f"EPSG:{in_epsg}"
         dicti['pipeline'][2]['out_srs'] = f"EPSG:{out_epsg}"
+        dicti['pipeline'][3]['filename'] = f"{path}"
         
         return dicti
