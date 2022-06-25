@@ -142,6 +142,15 @@ class Util:
         return converted
 
     def generate_polygon(self, coor, epsg):
+        """ generates a polygon based on a list of coordinates specifed
+        
+        params:
+            coor: 2D list containing points and their x, y coordinates or lat and long
+            epsg: the format to put them in
+            
+        return: a geopandas dataframe containing the polygon
+        
+        """
         polygon_g = Polygon(coor)
         crs = {'init': 'epsg:'+str(epsg)}
         polygon = geopandas.GeoDataFrame(index=[0], crs=crs, geometry=[polygon_g])       
@@ -150,6 +159,16 @@ class Util:
 
 
     def show_on_map(self, polygon, zoom):
+        """ shows polygon on a map
+        
+        params: 
+            polygon: the polygon to show on the map. a geopandas polygon
+            zoom: zoom factor on the map (integer)
+            
+        return: a figure
+        
+        """
+        
         #region selection
         poly = mapping((polygon.iloc[:,0][0]))
         tmp = poly['coordinates'][0][0]
@@ -163,6 +182,9 @@ class Util:
 
 
     def modify_pipe_json(self, json_loc, url, path, in_epsg, out_epsg, polygon_b, bounds=None):
+        """ 
+        
+        """
         dicti = self.read_json(json_loc)
         if bounds is not None:
             dicti['pipeline'][0]['bounds'] = f"([{bounds[0]},{bounds[2]}],[{bounds[1]},{bounds[3]}])"
