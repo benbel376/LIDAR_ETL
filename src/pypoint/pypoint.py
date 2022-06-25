@@ -7,7 +7,13 @@ import numpy as np
 from pyproj import Proj, transform
 import folium
 import laspy as lp
-import sys
+import richdem as rd
+import rasterio
+import math
+import urllib.request, json 
+import warnings
+import matplotlib.pyplot as plt
+warnings.filterwarnings("ignore")
 
 sys.path.append(".")
 sys.path.append("..")
@@ -37,10 +43,32 @@ class pypoint:
         return data
 
 
+    def load_full_data(self, selection_list, url, polygon, json_location, epsg):
+        regions = selection_list[0]
+        bounds = selection_list[1]
+
+        data = {}
+        url = url
+        for i in range(len(regions)):
+            try:
+                year = int(regions[i][-4:])
+            except ValueError:
+                year = None
+            region = regions[i]
+            furl = url+region+"ept.json"
+            request = modify_pipe_json(json_location, furl, epsg[0], epsg[1], polygon, bounds[i])
+            pipe = pdal.Pipeline(json.dumps(request))
+            pipe.execute()
+            df = self.generate_geo_df(pipe.arrays[0], epsg[1])
+            data["year"] = f"{year}"
+            data["data"] = df
+
+        return pd.DataFrame([data])
+
     def generate_geo_df(pipe, epsg):
-    """
-    returns a geopandas dataframe
-    """
+        """
+        returns a geopandas dataframe
+        """
         try:
             cloud_points = []
             elevations =[]

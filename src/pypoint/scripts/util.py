@@ -7,7 +7,13 @@ import numpy as np
 from pyproj import Proj, transform
 import folium
 import laspy as lp
-
+import richdem as rd
+import rasterio
+import math
+import urllib.request, json 
+import warnings
+import matplotlib.pyplot as plt
+warnings.filterwarnings("ignore")
 
 class util:
     
@@ -50,28 +56,6 @@ class util:
         except FileNotFoundError:
             print('File not found.')
     
-    
-    def load_full_data(selection_list, url, polygon, json_location, epsg):
-        regions = selection_list[0]
-        bounds = selection_list[1]
-
-        data = {}
-        url = url
-        for i in range(len(regions)):
-            try:
-                year = int(regions[i][-4:])
-            except ValueError:
-                year = None
-            region = regions[i]
-            furl = url+region+"ept.json"
-            request = modify_pipe_json(json_location, furl, epsg[0], epsg[1], polygon, bounds[i])
-            pipe = pdal.Pipeline(json.dumps(request))
-            pipe.execute()
-            df = generate_geo_df(pipe.arrays[0], epsg[1])
-            data["year"] = f"{year}"
-            data["data"] = df
-
-        return pd.DataFrame([data])
     
     
     def compare(meta_loc, coor):
