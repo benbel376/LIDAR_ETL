@@ -27,6 +27,10 @@ git clone hhttps://github.com/benbel376/LIDAR_ETL.git
 cd LIDAR_ETL
 pip install -r docs/requirements.txt
 ```
+or 
+```
+use this command: pip install -i https://test.pypi.org/simple/ pypointd==0.0.1
+```
 
 ## Data
 - **The Data:**  is a LIDAR HIgh definition elevation data. It is a point cloud, which is basically a set of data points in space. The points may represent a 3D shape or object. Each point position has its set of Cartesian coordinates (X, Y, Z) and associated characteristics like intensity, color, and many others. In the context of this project, the data is a national baseline of consistent high-resolution topographic elevation data – both bare earth and 3D point clouds collected in the 3D Elevation Program led by USGS.
