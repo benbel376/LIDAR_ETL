@@ -38,11 +38,17 @@ class Pypoint:
                    url='https://s3-us-west-2.amazonaws.com/usgs-lidar-public/'):
         """
         loads data by taking path and epsg informations
+        
         param:
+        
             meta_path: the location of the metadata
+            
             save_path: the location to save fetched data
+            
             pipeline: the loction of the pdal pipeline json file
+            
             epsg: a list of epsg files that hold original and new epsg values
+            
             url: url to fetch the data from
             
         return: geopandas dataframe with elevation and location varibles
@@ -62,14 +68,21 @@ class Pypoint:
     
 
     def load_full_data(self, selection_list, url, path, polygon, json_location, epsg):
-        """ loads data by taking selection information.
+        """ 
+        loads data by taking selection information.
         
         params:
+        
             selection_list: a list that contains region names and their boundaries
+            
             url: url to fetch the data from
+            
             path: the path to save the data to.
+            
             polygon: the selection boundary in polygon form
+            
             json_location: the location of pdal pipeline json
+            
             epsg: a list: [from, to]
         
         return: geopandas dataframe.
@@ -100,10 +113,13 @@ class Pypoint:
         return pd.DataFrame([data])
 
     def generate_geo_df(self, pipe, epsg):
-        """ Turns an array into a geopandas dataframe.
+        """ 
+        Turns an array into a geopandas dataframe.
         
         params: 
+        
             pipe: pdal pipeline object
+            
             epsg: from and to epsg formats
             
         return: a geopandas dataframe.
@@ -134,10 +150,15 @@ class Pypoint:
         """ calculates topographic wetness index based on slope and accmulation results.
         
         params: 
+        
             df: the dataframe that holds the point cloud.
+            
             prec: the precision for interpolation
+            
             epsg: the final epsg format
+            
             save_slope: a location to save the generated slope image
+            
             save_accum: a location to save the accummulation image
             
         return: a new dataframe with TWI column added
@@ -219,9 +240,13 @@ class Pypoint:
         """ Plots a 3D terrain scatter plot for the cloud data points of geopandas data frame using matplotlib
         
         params:
+        
             df: the data
+            
             title: the title for generated image
+            
             path: path to save the generated image
+            
             s: precision.
             
         return: none.
@@ -241,8 +266,11 @@ class Pypoint:
         """ Plots a 2D heat map for the point cloud data using matplotlib
         
         params: 
+        
             df: the data.
+            
             title: the title for the image to be generated.
+            
             path: the path to save the image to be generated.
             
         returns: None.
@@ -260,12 +288,15 @@ class Pypoint:
     def grid_resample(self, df,size, epsg=4326):
         """ resamples points using grid method
         
-        params: 
+        Args: 
+        
             df: the data
+            
             size: the size of voxels
+            
             epsg: the final epsg
             
-        return: resampled dataframe.
+        Returns: resampled dataframe.
         
         
         """
