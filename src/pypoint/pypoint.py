@@ -7,7 +7,11 @@ import numpy as np
 from pyproj import Proj, transform
 import folium
 import laspy as lp
+import sys
 
+sys.path.append(".")
+sys.path.append("..")
+from .scripts import util
 
 class pypoint: 
     """

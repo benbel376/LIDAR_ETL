@@ -34,14 +34,14 @@ class util:
                 
     # loading json file
     def read_json(self, json_path):
-    """ reads a json file and returns a pthon dictionary
+        """ reads a json file and returns a pthon dictionary
 
-    json_path:
-        path to file
+        json_path:
+            path to file
 
-    return:
-        a python dictionary
-    """
+        return:
+            a python dictionary
+        """
         try:
             with open(json_path) as js:
                 json_obj = json.load(js)
@@ -101,17 +101,17 @@ class util:
         return [list(selection_list.keys()), list(selection_list.values())]
 
     def convert_EPSG(self, fromT, lon, lat):
-    """ a function that converts one EPSG format to another
+        """ a function that converts one EPSG format to another
 
-    parameters:
-        fromT: the original EPSG format
-        lon: the longitude value
-        lat: the latitude value
+        parameters:
+            fromT: the original EPSG format
+            lon: the longitude value
+            lat: the latitude value
 
-    Return: 
-        [x, y]: a list with new EPSG formatted values
+        Return: 
+            [x, y]: a list with new EPSG formatted values
 
-    """
+        """
         P3857 = Proj(init='epsg:3857')
         P4326 = Proj(init='epsg:4326')
         if(fromT == 4326):
@@ -125,15 +125,15 @@ class util:
         return [x, y]
 
     def loop_EPSG_converter(self, listin):
-    """ runs the EPSG converter for specified amount of iterations
+        """ runs the EPSG converter for specified amount of iterations
 
-    Parameter:
-        listin: a list that contains a pair of latitude and longitude values
+        Parameter:
+            listin: a list that contains a pair of latitude and longitude values
 
-    Return: 
-        converted: a new list with converted set of pairs of the values
+        Return: 
+            converted: a new list with converted set of pairs of the values
 
-    """
+        """
         converted = []
         for item in listin:
             converted.append(convert_EPSG(4326, item[0], item[1]))
