@@ -52,8 +52,8 @@ class Util:
     def read_json(self, json_path):
         """ reads a json file and returns a pthon dictionary
 
-        json_path:
-            path to file
+        params:
+            json_path: path to file
 
         return:
             a python dictionary
