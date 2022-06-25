@@ -58,7 +58,7 @@ class Util:
     
     
     
-    def compare(meta_loc, coor):
+    def compare(self, meta_loc, coor):
         
         try:
             with open(meta_loc, 'r') as openfile:
