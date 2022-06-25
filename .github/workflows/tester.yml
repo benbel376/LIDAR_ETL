@@ -20,9 +20,7 @@ jobs:
       
       # this Action should follow steps to set up Python build environment
       - name: Install Python dependencies
-        uses: py-actions/py-dependency-install@v3
-    	with:
-      	  path: "docs/requirements.txt"
+        run: pip install -r docs/requirements.txt
 
       # Runs a single command using the runners shell
       - name: Run tests script
