@@ -10,6 +10,7 @@ import laspy as lp
 import richdem as rd
 import rasterio
 import math
+from branca.element import Figure
 import urllib.request, json 
 import warnings
 import matplotlib.pyplot as plt
@@ -113,11 +114,12 @@ class Util:
         poly = mapping((polygon.iloc[:,0][0]))
         tmp = poly['coordinates'][0][0]
         anchor = [tmp[1], tmp[0]]
-        m = folium.Map(anchor,zoom_start=zoom, tiles='cartodbpositron')
+        fig = Figure(width=600, height=400)
+        m = folium.Map(anchor, zoom_start=zoom, tiles='cartodbpositron')
         folium.GeoJson(polygon).add_to(m)
         folium.LatLngPopup().add_to(m)
-        
-        return m
+        fig.add_child(m)
+        return fig
 
 
     def modify_pipe_json(self, json_loc, url, in_epsg, out_epsg, polygon_b, bounds=None):

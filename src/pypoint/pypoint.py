@@ -17,13 +17,14 @@ import urllib.request, json
 import warnings
 import matplotlib.pyplot as plt
 warnings.filterwarnings("ignore")
+import sys
 
 sys.path.append(".")
 sys.path.append("..")
-from .scripts import util
+from scripts import util
 utility = util.Util()
 
-class pypoint: 
+class Pypoint: 
     """
     class that provides data fetching, transforming, and visualization functionalities
     
