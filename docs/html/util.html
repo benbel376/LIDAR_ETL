@@ -48,11 +48,16 @@ class Util:
     
     def create_meta(self, region_list, name, url, offset=0):
         &#34;&#34;&#34;creates meta data
+        
         Params:
-            region_list: csv or txt file with list of regions
+        
+            region_list: csv or txt file with list of regions.
+            
             name: name for the metadata to generate.
+            
             url: the url to fetch the metadata from.
-            offset: the line number in the region_list to start fetching data from
+            
+            offset: the line number in the region_list to start fetching data from.
             
         return: None.
         &#34;&#34;&#34;
@@ -78,13 +83,14 @@ class Util:
                 
     # loading json file
     def read_json(self, json_path):
-        &#34;&#34;&#34; reads a json file and returns a pthon dictionary
+        &#34;&#34;&#34; 
+        reads a json file and returns a pthon dictionary
 
         params:
+        
             json_path: path to file
 
-        return:
-            a python dictionary
+        return: a python dictionary
         &#34;&#34;&#34;
         try:
             with open(json_path) as js:
@@ -97,10 +103,13 @@ class Util:
     
     
     def compare(self, meta_loc, coor):
-        &#34;&#34;&#34; compares meta_loc with the polygon coordinate to determine where the polygon is found
+        &#34;&#34;&#34; 
+        compares meta_loc with the polygon coordinate to determine where the polygon is found
         
         params:
+        
             meta_loc: the location of the metadata
+            
             coor: the polygon coordinates: it is a list of points.
             
         return: regions that hold the polygon and their boundaries.
@@ -135,12 +144,17 @@ class Util:
 
 
     def convert_EPSG(self, fromT, toT, lon, lat):
-        &#34;&#34;&#34; converts EPSG formats from one type to another
+        &#34;&#34;&#34; 
+        converts EPSG formats from one type to another
         
         params: 
+        
             fromT: the initial epsg value to convert from in integer
+            
             toT: the fianl epsg value to convert to in integer
+            
             lon: the longitude value in old format
+            
             lat: the latitude value in old format
             
         return: new longitude and latitude values in the new format
@@ -152,14 +166,18 @@ class Util:
         return [x, y]
         
     def loop_EPSG_converter(self, listin, fromT, toT):
-        &#34;&#34;&#34; runs the convert_EPSG function for a list of points
+        &#34;&#34;&#34; 
+        Runs the convert_EPSG function for a list of points
         
         Params:
+        
             listin: list of points
+            
             fromT: old epsg format
+            
             toT: new epsg format
             
-        return: converted list of points. 
+        Return: converted list of points. 
         
         
         &#34;&#34;&#34;
@@ -170,13 +188,16 @@ class Util:
         return converted
 
     def generate_polygon(self, coor, epsg):
-        &#34;&#34;&#34; generates a polygon based on a list of coordinates specifed
+        &#34;&#34;&#34; 
+        Generates a polygon based on a list of coordinates specifed
         
-        params:
+        Params:
+        
             coor: 2D list containing points and their x, y coordinates or lat and long
+            
             epsg: the format to put them in
             
-        return: a geopandas dataframe containing the polygon
+        Return: a geopandas dataframe containing the polygon
         
         &#34;&#34;&#34;
         polygon_g = Polygon(coor)
@@ -187,13 +208,16 @@ class Util:
 
 
     def show_on_map(self, polygon, zoom):
-        &#34;&#34;&#34; shows polygon on a map
+        &#34;&#34;&#34; 
+        Shows polygon on a map
         
         params: 
+        
             polygon: the polygon to show on the map. a geopandas polygon
+            
             zoom: zoom factor on the map (integer)
             
-        return: a figure
+        Return: a figure
         
         &#34;&#34;&#34;
         
@@ -206,19 +230,28 @@ class Util:
         folium.GeoJson(polygon).add_to(m)
         folium.LatLngPopup().add_to(m)
         fig.add_child(m)
+        
         return fig
 
 
     def modify_pipe_json(self, json_loc, url, path, in_epsg, out_epsg, polygon_b, bounds=None):
-        &#34;&#34;&#34; updates the pipeline for pdal in json format.
+        &#34;&#34;&#34; 
+        Updates the pipeline for pdal in json format.
         
         params: 
+        
             json_loc: location of the pipleine json file
+            
             url: the data url to add into the pipeline
+            
             path: data path to add to url. location to save the generated data to.
+            
             in_epsg: the input epsg to add to pipeline
+            
             out_epsg: te output epsg to add to pipeline
+            
             polygon_b: the polygon boundary coordinates in string to add to the pipeline
+            
             bounds: the bounds of the data to be fetched in string of lists
             
         return: a dictionary to save 
@@ -258,11 +291,16 @@ class Util:
     
     def create_meta(self, region_list, name, url, offset=0):
         &#34;&#34;&#34;creates meta data
+        
         Params:
-            region_list: csv or txt file with list of regions
+        
+            region_list: csv or txt file with list of regions.
+            
             name: name for the metadata to generate.
+            
             url: the url to fetch the metadata from.
-            offset: the line number in the region_list to start fetching data from
+            
+            offset: the line number in the region_list to start fetching data from.
             
         return: None.
         &#34;&#34;&#34;
@@ -288,13 +326,14 @@ class Util:
                 
     # loading json file
     def read_json(self, json_path):
-        &#34;&#34;&#34; reads a json file and returns a pthon dictionary
+        &#34;&#34;&#34; 
+        reads a json file and returns a pthon dictionary
 
         params:
+        
             json_path: path to file
 
-        return:
-            a python dictionary
+        return: a python dictionary
         &#34;&#34;&#34;
         try:
             with open(json_path) as js:
@@ -307,10 +346,13 @@ class Util:
     
     
     def compare(self, meta_loc, coor):
-        &#34;&#34;&#34; compares meta_loc with the polygon coordinate to determine where the polygon is found
+        &#34;&#34;&#34; 
+        compares meta_loc with the polygon coordinate to determine where the polygon is found
         
         params:
+        
             meta_loc: the location of the metadata
+            
             coor: the polygon coordinates: it is a list of points.
             
         return: regions that hold the polygon and their boundaries.
@@ -345,12 +387,17 @@ class Util:
 
 
     def convert_EPSG(self, fromT, toT, lon, lat):
-        &#34;&#34;&#34; converts EPSG formats from one type to another
+        &#34;&#34;&#34; 
+        converts EPSG formats from one type to another
         
         params: 
+        
             fromT: the initial epsg value to convert from in integer
+            
             toT: the fianl epsg value to convert to in integer
+            
             lon: the longitude value in old format
+            
             lat: the latitude value in old format
             
         return: new longitude and latitude values in the new format
@@ -362,14 +409,18 @@ class Util:
         return [x, y]
         
     def loop_EPSG_converter(self, listin, fromT, toT):
-        &#34;&#34;&#34; runs the convert_EPSG function for a list of points
+        &#34;&#34;&#34; 
+        Runs the convert_EPSG function for a list of points
         
         Params:
+        
             listin: list of points
+            
             fromT: old epsg format
+            
             toT: new epsg format
             
-        return: converted list of points. 
+        Return: converted list of points. 
         
         
         &#34;&#34;&#34;
@@ -380,13 +431,16 @@ class Util:
         return converted
 
     def generate_polygon(self, coor, epsg):
-        &#34;&#34;&#34; generates a polygon based on a list of coordinates specifed
+        &#34;&#34;&#34; 
+        Generates a polygon based on a list of coordinates specifed
         
-        params:
+        Params:
+        
             coor: 2D list containing points and their x, y coordinates or lat and long
+            
             epsg: the format to put them in
             
-        return: a geopandas dataframe containing the polygon
+        Return: a geopandas dataframe containing the polygon
         
         &#34;&#34;&#34;
         polygon_g = Polygon(coor)
@@ -397,13 +451,16 @@ class Util:
 
 
     def show_on_map(self, polygon, zoom):
-        &#34;&#34;&#34; shows polygon on a map
+        &#34;&#34;&#34; 
+        Shows polygon on a map
         
         params: 
+        
             polygon: the polygon to show on the map. a geopandas polygon
+            
             zoom: zoom factor on the map (integer)
             
-        return: a figure
+        Return: a figure
         
         &#34;&#34;&#34;
         
@@ -416,19 +473,28 @@ class Util:
         folium.GeoJson(polygon).add_to(m)
         folium.LatLngPopup().add_to(m)
         fig.add_child(m)
+        
         return fig
 
 
     def modify_pipe_json(self, json_loc, url, path, in_epsg, out_epsg, polygon_b, bounds=None):
-        &#34;&#34;&#34; updates the pipeline for pdal in json format.
+        &#34;&#34;&#34; 
+        Updates the pipeline for pdal in json format.
         
         params: 
+        
             json_loc: location of the pipleine json file
+            
             url: the data url to add into the pipeline
+            
             path: data path to add to url. location to save the generated data to.
+            
             in_epsg: the input epsg to add to pipeline
+            
             out_epsg: te output epsg to add to pipeline
+            
             polygon_b: the polygon boundary coordinates in string to add to the pipeline
+            
             bounds: the bounds of the data to be fetched in string of lists
             
         return: a dictionary to save 
@@ -452,19 +518,24 @@ class Util:
 </code></dt>
 <dd>
 <div class="desc"><p>compares meta_loc with the polygon coordinate to determine where the polygon is found</p>
-<p>params:
-meta_loc: the location of the metadata
-coor: the polygon coordinates: it is a list of points.</p>
+<p>params:</p>
+<pre><code>meta_loc: the location of the metadata
+
+coor: the polygon coordinates: it is a list of points.
+</code></pre>
 <p>return: regions that hold the polygon and their boundaries.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def compare(self, meta_loc, coor):
-    &#34;&#34;&#34; compares meta_loc with the polygon coordinate to determine where the polygon is found
+    &#34;&#34;&#34; 
+    compares meta_loc with the polygon coordinate to determine where the polygon is found
     
     params:
+    
         meta_loc: the location of the metadata
+        
         coor: the polygon coordinates: it is a list of points.
         
     return: regions that hold the polygon and their boundaries.
@@ -501,23 +572,32 @@ coor: the polygon coordinates: it is a list of points.</p>
 </code></dt>
 <dd>
 <div class="desc"><p>converts EPSG formats from one type to another</p>
-<p>params:
-fromT: the initial epsg value to convert from in integer
+<p>params: </p>
+<pre><code>fromT: the initial epsg value to convert from in integer
+
 toT: the fianl epsg value to convert to in integer
+
 lon: the longitude value in old format
-lat: the latitude value in old format</p>
+
+lat: the latitude value in old format
+</code></pre>
 <p>return: new longitude and latitude values in the new format</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def convert_EPSG(self, fromT, toT, lon, lat):
-    &#34;&#34;&#34; converts EPSG formats from one type to another
+    &#34;&#34;&#34; 
+    converts EPSG formats from one type to another
     
     params: 
+    
         fromT: the initial epsg value to convert from in integer
+        
         toT: the fianl epsg value to convert to in integer
+        
         lon: the longitude value in old format
+        
         lat: the latitude value in old format
         
     return: new longitude and latitude values in the new format
@@ -535,10 +615,10 @@ lat: the latitude value in old format</p>
 <dd>
 <div class="desc"><p>creates meta data</p>
 <h2 id="params">Params</h2>
-<p>region_list: csv or txt file with list of regions
-name: name for the metadata to generate.
-url: the url to fetch the metadata from.
-offset: the line number in the region_list to start fetching data from</p>
+<p>region_list: csv or txt file with list of regions.</p>
+<p>name: name for the metadata to generate.</p>
+<p>url: the url to fetch the metadata from.</p>
+<p>offset: the line number in the region_list to start fetching data from.</p>
 <p>return: None.</p></div>
 <details class="source">
 <summary>
@@ -546,11 +626,16 @@ offset: the line number in the region_list to start fetching data from</p>
 </summary>
 <pre><code class="python">def create_meta(self, region_list, name, url, offset=0):
     &#34;&#34;&#34;creates meta data
+    
     Params:
-        region_list: csv or txt file with list of regions
+    
+        region_list: csv or txt file with list of regions.
+        
         name: name for the metadata to generate.
+        
         url: the url to fetch the metadata from.
-        offset: the line number in the region_list to start fetching data from
+        
+        offset: the line number in the region_list to start fetching data from.
         
     return: None.
     &#34;&#34;&#34;
@@ -578,23 +663,26 @@ offset: the line number in the region_list to start fetching data from</p>
 <span>def <span class="ident">generate_polygon</span></span>(<span>self, coor, epsg)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>generates a polygon based on a list of coordinates specifed</p>
-<p>params:
-coor: 2D list containing points and their x, y coordinates or lat and long
-epsg: the format to put them in</p>
-<p>return: a geopandas dataframe containing the polygon</p></div>
+<div class="desc"><p>Generates a polygon based on a list of coordinates specifed</p>
+<h2 id="params">Params</h2>
+<p>coor: 2D list containing points and their x, y coordinates or lat and long</p>
+<p>epsg: the format to put them in</p>
+<p>Return: a geopandas dataframe containing the polygon</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def generate_polygon(self, coor, epsg):
-    &#34;&#34;&#34; generates a polygon based on a list of coordinates specifed
+    &#34;&#34;&#34; 
+    Generates a polygon based on a list of coordinates specifed
     
-    params:
+    Params:
+    
         coor: 2D list containing points and their x, y coordinates or lat and long
+        
         epsg: the format to put them in
         
-    return: a geopandas dataframe containing the polygon
+    Return: a geopandas dataframe containing the polygon
     
     &#34;&#34;&#34;
     polygon_g = Polygon(coor)
@@ -608,25 +696,29 @@ epsg: the format to put them in</p>
 <span>def <span class="ident">loop_EPSG_converter</span></span>(<span>self, listin, fromT, toT)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>runs the convert_EPSG function for a list of points</p>
+<div class="desc"><p>Runs the convert_EPSG function for a list of points</p>
 <h2 id="params">Params</h2>
-<p>listin: list of points
-fromT: old epsg format
-toT: new epsg format</p>
-<p>return: converted list of points.</p></div>
+<p>listin: list of points</p>
+<p>fromT: old epsg format</p>
+<p>toT: new epsg format</p>
+<p>Return: converted list of points.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def loop_EPSG_converter(self, listin, fromT, toT):
-    &#34;&#34;&#34; runs the convert_EPSG function for a list of points
+    &#34;&#34;&#34; 
+    Runs the convert_EPSG function for a list of points
     
     Params:
+    
         listin: list of points
+        
         fromT: old epsg format
+        
         toT: new epsg format
         
-    return: converted list of points. 
+    Return: converted list of points. 
     
     
     &#34;&#34;&#34;
@@ -641,30 +733,45 @@ toT: new epsg format</p>
 <span>def <span class="ident">modify_pipe_json</span></span>(<span>self, json_loc, url, path, in_epsg, out_epsg, polygon_b, bounds=None)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>updates the pipeline for pdal in json format.</p>
-<p>params:
-json_loc: location of the pipleine json file
+<div class="desc"><p>Updates the pipeline for pdal in json format.</p>
+<p>params: </p>
+<pre><code>json_loc: location of the pipleine json file
+
 url: the data url to add into the pipeline
+
 path: data path to add to url. location to save the generated data to.
+
 in_epsg: the input epsg to add to pipeline
+
 out_epsg: te output epsg to add to pipeline
+
 polygon_b: the polygon boundary coordinates in string to add to the pipeline
-bounds: the bounds of the data to be fetched in string of lists</p>
+
+bounds: the bounds of the data to be fetched in string of lists
+</code></pre>
 <p>return: a dictionary to save</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def modify_pipe_json(self, json_loc, url, path, in_epsg, out_epsg, polygon_b, bounds=None):
-    &#34;&#34;&#34; updates the pipeline for pdal in json format.
+    &#34;&#34;&#34; 
+    Updates the pipeline for pdal in json format.
     
     params: 
+    
         json_loc: location of the pipleine json file
+        
         url: the data url to add into the pipeline
+        
         path: data path to add to url. location to save the generated data to.
+        
         in_epsg: the input epsg to add to pipeline
+        
         out_epsg: te output epsg to add to pipeline
+        
         polygon_b: the polygon boundary coordinates in string to add to the pipeline
+        
         bounds: the bounds of the data to be fetched in string of lists
         
     return: a dictionary to save 
@@ -687,22 +794,23 @@ bounds: the bounds of the data to be fetched in string of lists</p>
 </code></dt>
 <dd>
 <div class="desc"><p>reads a json file and returns a pthon dictionary</p>
-<p>params:
-json_path: path to file</p>
-<p>return:
-a python dictionary</p></div>
+<p>params:</p>
+<pre><code>json_path: path to file
+</code></pre>
+<p>return: a python dictionary</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def read_json(self, json_path):
-    &#34;&#34;&#34; reads a json file and returns a pthon dictionary
+    &#34;&#34;&#34; 
+    reads a json file and returns a pthon dictionary
 
     params:
+    
         json_path: path to file
 
-    return:
-        a python dictionary
+    return: a python dictionary
     &#34;&#34;&#34;
     try:
         with open(json_path) as js:
@@ -717,23 +825,28 @@ a python dictionary</p></div>
 <span>def <span class="ident">show_on_map</span></span>(<span>self, polygon, zoom)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>shows polygon on a map</p>
-<p>params:
-polygon: the polygon to show on the map. a geopandas polygon
-zoom: zoom factor on the map (integer)</p>
-<p>return: a figure</p></div>
+<div class="desc"><p>Shows polygon on a map</p>
+<p>params: </p>
+<pre><code>polygon: the polygon to show on the map. a geopandas polygon
+
+zoom: zoom factor on the map (integer)
+</code></pre>
+<p>Return: a figure</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def show_on_map(self, polygon, zoom):
-    &#34;&#34;&#34; shows polygon on a map
+    &#34;&#34;&#34; 
+    Shows polygon on a map
     
     params: 
+    
         polygon: the polygon to show on the map. a geopandas polygon
+        
         zoom: zoom factor on the map (integer)
         
-    return: a figure
+    Return: a figure
     
     &#34;&#34;&#34;
     
@@ -746,6 +859,7 @@ zoom: zoom factor on the map (integer)</p>
     folium.GeoJson(polygon).add_to(m)
     folium.LatLngPopup().add_to(m)
     fig.add_child(m)
+    
     return fig</code></pre>
 </details>
 </dd>
