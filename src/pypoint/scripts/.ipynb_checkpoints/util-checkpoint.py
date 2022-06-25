@@ -69,6 +69,15 @@ class Util:
     
     
     def compare(self, meta_loc, coor):
+        """ compares meta_loc with the polygon coordinate to determine where the polygon is found
+        
+        params:
+            meta_loc: the location of the metadata
+            coor: the polygon coordinates: it is a list of points.
+            
+        return: regions that hold the polygon and their boundaries.
+        
+        """
         
         try:
             with open(meta_loc, 'r') as openfile:
@@ -98,6 +107,17 @@ class Util:
 
 
     def convert_EPSG(self, fromT, toT, lon, lat):
+        """ converts EPSG formats from one type to another
+        
+        params: 
+            fromT: the initial epsg value to convert from in integer
+            toT: the fianl epsg value to convert to in integer
+            lon: the longitude value in old format
+            lat: the latitude value in old format
+            
+        return: new longitude and latitude values in the new format
+        
+        """
         input1 = Proj(init=f'epsg:{fromT}')
         input2 = Proj(init=f'epsg:{toT}') 
         x, y = transform(input1,input2, lon, lat)
