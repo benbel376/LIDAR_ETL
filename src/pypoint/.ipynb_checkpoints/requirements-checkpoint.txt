@@ -1,0 +1,14 @@
+branca==0.5.0
+folium==0.12.1.post1
+geopandas==0.10.2
+laspy==2.1.2
+matplotlib==3.5.2
+numpy==1.22.4
+pandas==1.4.2
+pdal==3.1.2
+pdal_plugins==1.2.0
+pyproj==3.3.1
+rasterio==1.2.10
+richdem==2.3.0
+scipy==1.8.1
+Shapely==1.8.2

@@ -1,0 +1,25 @@
+{
+    "pipeline": [
+        { 
+            "polygon": "",
+            "filename": "",
+            "type": "readers.ept",
+            "tag": "readdata"
+        },
+    	{
+	    "type":"filters.range",
+	    "limits":"Classification[2:2]"
+    	},
+        {
+            "in_srs":"",
+            "out_srs": "",
+            "tag": "reprojectUTM",
+            "type": "filters.reprojection"
+        },
+        {
+            "filename": "iowa.csv",
+            "tag": "writerscsv",
+            "type": "writers.text"
+        }
+    ]
+}
