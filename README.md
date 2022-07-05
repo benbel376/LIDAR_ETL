@@ -39,7 +39,7 @@ use this command: pip install -i https://test.pypi.org/simple/ pypointd==0.0.1
 
 - **Data Structure:** 1,801 Datasets are currently available via the USGS 3D Elevation Program that are organized based on region and year. The data is stored in Entwine Point Tile (EPT) format, which is a simple and flexible octree-based storage format for point cloud data. 
 ## essential folder structure
-![image](https://user-images.githubusercontent.com/44437166/177311319-478516eb-7720-4f66-abd7-f649c64a96c4.png)
+![image](https://user-images.githubusercontent.com/44437166/177312047-50415cba-d225-4036-b3fc-a206606cf2f5.png)
 ## Docs
 > contains the documentation of the package
 > requirements.txt
