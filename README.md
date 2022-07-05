@@ -1,4 +1,5 @@
 # LIDER ETL
+![image](https://user-images.githubusercontent.com/44437166/177315211-f5d3ac08-60a8-43d6-9adc-2aae7791856d.png)
 
 **Table of contents**
 
