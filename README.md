@@ -38,7 +38,8 @@ use this command: pip install -i https://test.pypi.org/simple/ pypointd==0.0.1
 - **Source of data:** USGS uploaded publicly available amazon s3 bucket found in the following url https://s3-us-west-2.amazonaws.com/usgs-lidar-public.
 
 - **Data Structure:** 1,801 Datasets are currently available via the USGS 3D Elevation Program that are organized based on region and year. The data is stored in Entwine Point Tile (EPT) format, which is a simple and flexible octree-based storage format for point cloud data. 
-
+## folder structure
+![image](https://user-images.githubusercontent.com/44437166/177311319-478516eb-7720-4f66-abd7-f649c64a96c4.png)
 ## Docs
 > contains the documentation of the package
 > requirements.txt
