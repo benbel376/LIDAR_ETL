@@ -1,5 +1,5 @@
 # LIDER ETL
-![image](https://user-images.githubusercontent.com/44437166/177315211-f5d3ac08-60a8-43d6-9adc-2aae7791856d.png)
+![image](https://user-images.githubusercontent.com/44437166/182764292-56939b27-152e-4ba5-8443-0aa8aa5932b0.png)
 
 **Table of contents**
 
@@ -14,12 +14,27 @@
 
 ## Overview
 
-> In this project I took data using API provided by USGS_3DEP ( United States Geological Survey 3D Elevation Program). AgriTech is a company working on maize farms and this project is done for the study of maize farms for water flow across different geographical areas. Extraction, Visualization and transformation of data were achieved in this project.
+### Introduction
+In this project we will be developing reliable, pip installable python module that can be used to work with LIDAR point cloud data. the business context is the following:
 
-## Requirements
+```We can better predict maize harvest if we better understand how water flows through a field, and which parts are likely to be flooded or too dry. One important ingredient to understanding water flow in a field is by measuring the elevation of the field at many points. The USGS recently released high resolution elevation data as a lidar point cloud called USGS 3DEP in a public dataset on Amazon. This dataset is essential to build models of water flow and predict plant health and maize harvest. ```
 
-- PDAL
-- Geopandas
+LIDAR high definition elevation data - USGS 3DEP - The USGS recently released high resolution elevation data as a lidar point cloud in a public dataset on Amazon. This dataset is complicated to understand and use, and it would be useful to have an easy way to access and use it in order to build models of water flow and predict plant health and maize harvest. 
+
+The project's task was to write a modular python code/package to connect to the API, query the data model to select with  a specified input and get a desired output. For example, submit a boundary (GPS coordinates polygon) and receive back a raster of the height of the terrain within the boundary.
+
+![image](https://user-images.githubusercontent.com/44437166/182767144-49aa7fa9-992e-4b1c-b136-7658cc7aeaad.png)
+
+
+This project can be used to work with Working with satellite imagery as well as geographical data files. It allows you to Load the Data from its source (s3 bucket) and Visualize it, filter 
+
+## Technology Used
+- Python Library
+  - PDAL
+  - Geopandas
+## Prerequistes
+
+- python 3.8
 
 ## Install
 
