@@ -74,6 +74,11 @@ or
 use this command: pip install -i https://test.pypi.org/simple/ pypointd==0.0.1
 ```
 ## Usage
+![image](https://user-images.githubusercontent.com/44437166/182864566-f4eaa00e-a802-4642-b0ed-a2b71d385141.png)
+![image](https://user-images.githubusercontent.com/44437166/182864601-198cac62-331d-4006-b8a4-ea5a72e56d02.png)
+![image](https://user-images.githubusercontent.com/44437166/182864619-58fc8630-cecc-42f5-a983-6e6f99c2083a.png)
+![image](https://user-images.githubusercontent.com/44437166/182864642-5d72cb23-b8ac-4a4e-babf-185654d036fe.png)
+![image](https://user-images.githubusercontent.com/44437166/182864651-7b44d432-b45a-4f07-93bd-7e5c427d479d.png)
 
 ## License
 - [MIT License](https://www.google.com/url?sa=t&rct=j&q=&esrc=s&source=web&cd=&cad=rja&uact=8&ved=2ahUKEwiMqbrwqaz5AhVPiqQKHa5uCtkQFnoECAYQAQ&url=https%3A%2F%2Fopensource.org%2Flicenses%2FMIT&usg=AOvVaw1MsEPekvPKCIceu2jiRDy4)
